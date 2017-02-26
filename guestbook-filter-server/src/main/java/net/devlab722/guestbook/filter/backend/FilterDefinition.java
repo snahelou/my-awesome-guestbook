@@ -35,7 +35,7 @@ public class FilterDefinition {
     public FilterDefinition(
             @Value("${filter.definition.filename:null}")
                     String filterDefinitionFilename,
-            @Value("${filter.empty.message.feedback:moi j'aime pas les messages vides")
+            @Value("${filter.empty.message.feedback:moi j'aime pas les messages vides}")
                     String emptyMessageCounterMeasure
     ) {
         this.emptyMessageCounterMeasure = emptyMessageCounterMeasure;
