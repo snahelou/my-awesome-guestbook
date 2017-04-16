@@ -1,0 +1,23 @@
+management:
+  context-path: {{ getv "/guestbook/shared/management/contextpath" }}
+  security:
+    enabled: {{ getv "/guestbook/filter/management/security/enabled" }}
+  info:
+    git:
+      mode: {{ getv "/guestbook/filter/management/info/git/mode" }}
+
+server:
+  port: {{ getv "/guestbook/shared/server/port" }}
+
+filter:
+  version: 1.0
+  definition:
+    filename: {{ getv "/guestbook/filter/filter/definition/filename" }}
+  empty:
+    message:
+      feedback: {{ getv "/guestbook/filter/filter/empty/message/feedback" }}
+
+info:
+  custom:
+    env: {{ getv "/guestbook/shared/info/custom/env" }}
+    message: {{ getv "/guestbook/filter/info/custom/message" }}

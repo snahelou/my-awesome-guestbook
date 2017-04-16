@@ -1,0 +1,33 @@
+= Make it work on openshift
+
+== Deal with security context
+
+* For the moment, you need to adjust the security context of the user account you will use to deploy the app in openshift
+* With Minishift you need to:
+** login as admin: `oc login -u system:admin`
+** edit the `restricted` security context: `oc edit scc restricted`
+*** Change `runAsUser.Type` to `RunAsAny`
+*** Change `requiredDropCapabilities` to `null` (don't forget to remove the list elements)
+*** save
+** that's it
+
+== Deploy
+
+* make sure to be logged as `developer` (`login -u developer` if needed)
+* change directory to the `deployments/openshift`
+* `oc create -f deployment/redis.yml`
+* `oc create -f deployment/filter.yml`
+* `oc create -f deployment/service-api.yml`
+* `oc create -f deployment/gateway.yml`
+* `oc create -f route/gateway.yml`
+
+Between each command, you can check in the openshift console that everything is working as expected.
+
+At this step, you can check that the gateway web service is running fine by accessing `http://gateway-myproject.<your minishift ip>.xip.io/admin/env`
+
+Modifiy the value of `GUESTBOOK_FRONTEND_API_SERVER_ROOT_URL` in the `deployment/frontend.yml` file to to match the route of the gateway. When it's OK:
+
+* `oc create -f deployment/frontend.yml`
+* `oc create -f route/frontend.yml`
+
+You can now access your openshifted guestbook at: `http://frontend-myproject.<your minishift ip>.xip.io`

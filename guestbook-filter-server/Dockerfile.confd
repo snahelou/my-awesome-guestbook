@@ -1,0 +1,24 @@
+FROM fabric8/java-alpine-openjdk8-jdk:1.2.1
+MAINTAINER Christophe Furmaniak <christophe.furmaniak@gmail.com>
+
+ENV AB_OF= \
+    JAVA_APP_DIR=/usr/local/appli \
+    JAVA_APP_NAME=guestbook-filter-server \
+    LOOZ_VERSION=v0.5.1 \
+    CONFD_ENABLED=true
+
+LABEL DOCKERFILE_PATH=/etc/dockerfile/Dockerfile
+
+RUN mkdir -p /usr/local/appli/config && \
+    apk add --no-cache wget && \
+    wget -O /usr/local/bin/confd https://github.com/kelseyhightower/confd/releases/download/v0.11.0/confd-0.11.0-linux-amd64 && \
+    chmod +x /usr/local/bin/confd
+
+COPY target/guestbook-filter-server-*.jar /usr/local/appli/springboot-app.jar
+COPY Dockerfile.confd /etc/dockerfile/
+COPY src/main/confd /etc/confd
+COPY src/main/scripts/startup.sh /usr/local/bin/
+
+EXPOSE 8080
+
+CMD ["/usr/local/bin/startup.sh"]
