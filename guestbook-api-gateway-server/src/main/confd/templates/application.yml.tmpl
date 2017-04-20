@@ -11,8 +11,14 @@ server:
 
 product:
   version: 1.1
+
 gateway:
   version: 1.0
+  guestbook:
+    endPointsAsString: {{ getv "/guestbook/gateway/server/endpointsasstring" }}
+  filter:
+    endPointsAsString: {{ getv "/guestbook/gateway/filter/endpointsasstring" }}
+
 filter:
   sanitize:
     url: /api/v1/filter/sanitize
