@@ -1,0 +1,6 @@
+[template]
+src = 'application.yml.tmpl'
+dest = '/usr/local/appli/config/application.yml'
+keys = [
+'/guestbook',
+]

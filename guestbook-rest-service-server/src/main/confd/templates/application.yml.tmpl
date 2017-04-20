@@ -1,0 +1,27 @@
+management:
+  context-path: {{ getv "/guestbook/shared/management/contextpath" }}
+  security:
+    enabled: {{ getv "/guestbook/server/management/security/enabled" }}
+  info:
+    git:
+      mode: {{ getv "/guestbook/server/management/info/git/mode" }}
+
+server:
+  port: {{ getv "/guestbook/shared/server/port" }}
+
+guestbook:
+  version: 1.2
+  backend:
+    redis:
+      read:
+        vip: {{ getv "/guestbook/server/backend/redis/read/vip" }}
+        port: {{ getv "/guestbook/server/backend/redis/read/port" }}
+      write:
+        vip: {{ getv "/guestbook/server/backend/redis/write/vip" }}
+        port: {{ getv "/guestbook/server/backend/redis/write/port" }}
+info:
+  custom:
+    env: {{ getv "/guestbook/shared/info/custom/env" }}
+    message: {{ getv "/guestbook/filter/info/custom/message" }}
+
+

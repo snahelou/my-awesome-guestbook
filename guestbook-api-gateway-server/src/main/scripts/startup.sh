@@ -1,9 +1,9 @@
 #!/bin/ash
 
-if [ -e /config/dictionaries/env.sh ]
+if [ -e /data/env.sh ]
 then
-  echo "Sourcing /config/dictionaries/env.sh"
-  source /config/dictionaries/env.sh
+  echo "Sourcing /data/env.sh"
+  source /data/env.sh
 else
   echo "/!\\ /!\\ /!\\ /!\\ /!\\ /!\\ /!\\ /!\\ /!\\ /!\\ /!\\"
   echo "No /data/env.sh found, you've been warned!"

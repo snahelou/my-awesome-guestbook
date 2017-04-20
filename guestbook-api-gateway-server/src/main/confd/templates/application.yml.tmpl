@@ -1,0 +1,26 @@
+management:
+  context-path: {{ getv "/guestbook/shared/management/contextpath" }}
+  security:
+    enabled: {{ getv "/guestbook/gateway/management/security/enabled" }}
+  info:
+    git:
+      mode: {{ getv "/guestbook/gateway/management/info/git/mode" }}
+
+server:
+  port: {{ getv "/guestbook/shared/server/port" }}
+
+product:
+  version: 1.1
+gateway:
+  version: 1.0
+filter:
+  sanitize:
+    url: /api/v1/filter/sanitize
+guestbook:
+  messages:
+    url: /api/v1/guestbook/messages
+
+info:
+  custom:
+    env: {{ getv "/guestbook/shared/info/custom/env" }}
+    message: {{ getv "/guestbook/filter/info/custom/message" }}
