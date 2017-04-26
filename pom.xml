@@ -8,7 +8,7 @@
     <version>0.1.0-SNAPSHOT</version>
     <modules>
         <module>guestbook-rest-service-api</module>
-        <module>guestbook-rest-service-server</module>
+        <module>guestbook-storage-service</module>
         <module>guestbook-simple-frontend</module>
         <module>guestbook-filter-service</module>
         <module>guestbook-gateway-service</module>

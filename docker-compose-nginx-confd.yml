@@ -6,18 +6,18 @@ services:
     - "8081:80"
     environment:
       GUESTBOOK_FRONTEND_API_SERVER_ROOT_URL: http://localhost:8080
-  gatewayserver:
-    build: ./guestbook-api-gateway-server/
+  gateway:
+    build: ./guestbook-gateway-service/
     ports:
     - "8080:8080"
     environment:
       GATEWAY_GUESTBOOK_ENDPOINTSASSTRING: "restserver:8080"
       GATEWAY_FILTER_ENDPOINTSASSTRING: "filterserver:8080"
     depends_on:
-    - restserver
-    - filterserver
-  restserver:
-    build: ./guestbook-rest-service-server/
+    - storage
+    - filter
+  storage:
+    build: ./guestbook-storage-service/
     ports:
     - "8085:8080"
     environment:
@@ -25,8 +25,8 @@ services:
       GUESTBOOK_BACKEND_REDIS_WRITE_VIP: redis
     depends_on:
     - redis
-  filterserver:
-    build: ./guestbook-filter-server/
+  filter:
+    build: ./guestbook-filter-service/
     ports:
     - "8086:8080"
   redis:
