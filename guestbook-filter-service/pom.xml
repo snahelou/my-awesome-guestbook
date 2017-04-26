@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>net.devlab722</groupId>
-            <artifactId>guestbook-rest-service-api</artifactId>
+            <artifactId>guestbook-storage-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
