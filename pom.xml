@@ -4,14 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.devlab722</groupId>
-    <artifactId>guestbook-rest-service</artifactId>
+    <artifactId>guestbook-app</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <modules>
-        <module>guestbook-rest-service-api</module>
-        <module>guestbook-rest-service-server</module>
+        <module>guestbook-storage-api</module>
+        <module>guestbook-storage-service</module>
         <module>guestbook-simple-frontend</module>
-        <module>guestbook-filter-server</module>
-        <module>guestbook-api-gateway-server</module>
+        <module>guestbook-filter-service</module>
+        <module>guestbook-gateway-service</module>
     </modules>
     <packaging>pom</packaging>
 

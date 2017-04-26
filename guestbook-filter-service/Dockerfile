@@ -3,7 +3,7 @@ MAINTAINER Christophe Furmaniak <christophe.furmaniak@gmail.com>
 
 ENV AB_OF= \
     JAVA_APP_DIR=/usr/local/appli \
-    JAVA_APP_NAME=guestbook-filter-server \
+    JAVA_APP_NAME=guestbook-filter-service \
     LOOZ_VERSION=v0.5.1 \
     CONFD_ENABLED=true
 
@@ -11,6 +11,6 @@ LABEL DOCKERFILE_PATH=/usr/local/appli/Dockerfile
 
 RUN mkdir -p /usr/local/appli/config
 
-COPY target/guestbook-filter-server-*.jar Dockerfile /usr/local/appli/
+COPY target/guestbook-filter-service-*.jar Dockerfile /usr/local/appli/
 
 EXPOSE 8080

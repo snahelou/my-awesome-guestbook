@@ -1,7 +1,6 @@
 FROM fabric8/java-alpine-openjdk8-jdk:1.2.1
 MAINTAINER Christophe Furmaniak <christophe.furmaniak@gmail.com>
 
-
 LABEL DOCKERFILE_PATH=/etc/dockerfile/Dockerfile
 
 RUN mkdir -p /usr/local/appli/config && \
@@ -11,11 +10,11 @@ RUN mkdir -p /usr/local/appli/config && \
 
 ENV AB_OF= \
     JAVA_APP_DIR=/usr/local/appli \
-    JAVA_APP_NAME=guestbook-api-gateway \
+    JAVA_APP_NAME=guestbook-filter-service \
     LOOZ_VERSION=v0.5.1 \
     CONFD_ENABLED=true
 
-COPY target/guestbook-api-gateway-server-*.jar  /usr/local/appli/springboot-app.jar
+COPY target/guestbook-filter-service-*.jar /usr/local/appli/springboot-app.jar
 COPY Dockerfile.confd /etc/dockerfile/Dockerfile
 COPY src/main/confd /etc/confd
 COPY src/main/scripts/startup.sh /usr/local/bin/

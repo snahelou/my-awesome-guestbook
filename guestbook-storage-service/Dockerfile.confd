@@ -10,11 +10,11 @@ RUN mkdir -p /usr/local/appli/config && \
 
 ENV AB_OF= \
     JAVA_APP_DIR=/usr/local/appli \
-    JAVA_APP_NAME=guestbook-rest-service-server \
+    JAVA_APP_NAME=guestbook-storage-service \
     LOOZ_VERSION=v0.5.1 \
     CONFD_ENABLED=true
 
-COPY target/guestbook-rest-service-server-*.jar /usr/local/appli/springboot-app.jar
+COPY target/guestbook-storage-service-*.jar /usr/local/appli/springboot-app.jar
 COPY Dockerfile.confd /etc/dockerfile/Dockerfile
 COPY src/main/confd /etc/confd
 COPY src/main/scripts/startup.sh /usr/local/bin/
