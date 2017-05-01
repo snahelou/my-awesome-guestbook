@@ -7,10 +7,10 @@ ENV AB_OF= \
     LOOZ_VERSION=v0.5.1 \
     CONFD_ENABLED=true
 
-LABEL DOCKERFILE_PATH=/usr/local/appli/Dockerfile
+LABEL DOCKERFILE_PATH=/usr/local/appli/Dockerfile.aio
 
 RUN mkdir -p /usr/local/appli/config
 
-COPY target/guestbook-filter-service-*.jar Dockerfile /usr/local/appli/
+COPY target/guestbook-filter-service-*.jar Dockerfile.aio /usr/local/appli/
 
 EXPOSE 8080

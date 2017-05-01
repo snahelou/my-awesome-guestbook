@@ -29,6 +29,7 @@
         <lombok.version>1.16.4</lombok.version>
         <guava.version>18.0</guava.version>
         <assertj.version>3.3.0</assertj.version>
+        <guestbook.app.docker.version>0.5.2</guestbook.app.docker.version>
         <!-- ==== Plugin's versions ==== -->
         <docker.maven.plugin.version>0.20.1</docker.maven.plugin.version>
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>

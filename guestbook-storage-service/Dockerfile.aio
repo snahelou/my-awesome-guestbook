@@ -10,8 +10,7 @@ LABEL DOCKERFILE_PATH=/usr/local/appli/Dockerfile
 
 RUN mkdir -p /usr/local/appli
 
-COPY target/guestbook-storage-service-*.jar  /usr/local/appli/
+COPY target/guestbook-storage-service-*.jar Dockerfile.aio /usr/local/appli/
 
-COPY Dockerfile /usr/local/appli/
 
 EXPOSE 8080
