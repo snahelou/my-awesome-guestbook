@@ -1,0 +1,75 @@
+version: '2'
+services:
+  filter:
+    image: looztra/guestbook-filter:0.5.2-confd
+    volumes_from:
+    - filter-config
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.sidekicks: filter-config
+  filter-config:
+    image: looztra/env-guestbook:dev-local--v0.3.0
+    command:
+    - /bin/true
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.start_once: 'true'
+
+  storage:
+    image: looztra/guestbook-storage:0.5.2-confd
+    volumes_from:
+    - storage-config
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.sidekicks: storage-config
+  storage-config:
+    image: looztra/env-guestbook:dev-local--v0.3.0
+    command:
+    - /bin/true
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.start_once: 'true'
+
+
+  gateway:
+    image: looztra/guestbook-gateway:0.5.2-confd
+    ports:
+      - "8080:8080"
+    volumes_from:
+    - gateway-config
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.sidekicks: gateway-config
+  gateway-config:
+    image: looztra/env-guestbook:dev-local--v0.3.0
+    command:
+    - /bin/true
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.start_once: 'true'
+
+  frontend:
+    image: looztra/guestbook-frontend:0.5.2-confd
+    ports:
+      - "8000:80"
+    labels:
+      io.rancher.container.pull_image: always
+    volumes_from:
+    - frontend-config
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.sidekicks: frontend-config
+  frontend-config:
+    image: looztra/env-guestbook:dev-local--v0.3.0
+    command:
+    - /bin/true
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.container.start_once: 'true'
+
+  redis:
+    image: redis:3-alpine
+    ports:
+      - "6379:6379"
+    labels:
+      io.rancher.container.pull_image: always

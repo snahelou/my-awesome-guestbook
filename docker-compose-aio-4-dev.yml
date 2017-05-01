@@ -3,23 +3,26 @@ services:
   frontend:
     image: nginx:stable-alpine
     ports:
-    - "8081:80"
+    - "8000:80"
     volumes:
     - ./guestbook-simple-frontend/src/main/html:/etc/nginx/html:ro
     - ./guestbook-simple-frontend/src/main/config/nginx-base.conf:/etc/nginx/nginx.conf:ro
   gateway:
-    build: ./guestbook-gateway-service/
+    build:
+      context: ./guestbook-gateway-service/
+      dockerfile: Dockerfile.aio
     ports:
     - "8080:8080"
     environment:
-      GATEWAY_GUESTBOOK_ENDPOINTSASSTRING: "restserver:8080"
-      GATEWAY_FILTER_ENDPOINTSASSTRING: "filterserver:8080"
-#    command: /deployments/run-java.sh --gateway.guestbook.endPointsAsString=restserver:8080 --gateway.filter.endPointsAsString=filterserver:8080
+      GATEWAY_GUESTBOOK_ENDPOINTSASSTRING: "storage:8080"
+      GATEWAY_FILTER_ENDPOINTSASSTRING: "filter:8080"
     depends_on:
     - storage
     - filter
   storage:
-    build: ./guestbook-storage-service/
+    build:
+      context: ./guestbook-storage-service/
+      dockerfile: Dockerfile.aio
     ports:
     - "8085:8080"
     environment:
@@ -27,9 +30,10 @@ services:
       GUESTBOOK_BACKEND_REDIS_WRITE_VIP: redis
     depends_on:
     - redis
-#    command: /deployments/run-java.sh --guestbook.backend.redis.read.vip=redis --guestbook.backend.redis.write.vip=redis
   filter:
-    build: ./guestbook-filter-service/
+    build:
+      context: ./guestbook-filter-service/
+      dockerfile: Dockerfile.aio
     ports:
     - "8086:8080"
   redis:

@@ -1,0 +1,16 @@
+FROM fabric8/java-alpine-openjdk8-jdk:1.2.1
+MAINTAINER Christophe Furmaniak <christophe.furmaniak@gmail.com>
+
+ENV AB_OF= \
+    JAVA_APP_DIR=/usr/local/appli \
+    JAVA_APP_NAME=guestbook-filter-service \
+    LOOZ_VERSION=v0.5.1 \
+    CONFD_ENABLED=true
+
+LABEL DOCKERFILE_PATH=/usr/local/appli/Dockerfile.aio
+
+RUN mkdir -p /usr/local/appli/config
+
+COPY target/guestbook-filter-service-*.jar Dockerfile.aio /usr/local/appli/
+
+EXPOSE 8080

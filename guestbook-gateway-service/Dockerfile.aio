@@ -5,13 +5,7 @@ ENV AB_OF= \
     JAVA_APP_DIR=/usr/local/appli \
     JAVA_APP_NAME=guestbook-gateway \
     LOOZ_VERSION=v0.5.1
-
-LABEL DOCKERFILE_PATH=/usr/local/appli/Dockerfile
-
+LABEL DOCKERFILE_PATH=/usr/local/appli/Dockerfile.aio
 RUN mkdir -p /usr/local/appli
-
-COPY target/guestbook-gateway-service-*.jar  /usr/local/appli/
-
-COPY Dockerfile /usr/local/appli/
-
+COPY target/guestbook-gateway-service-*.jar Dockerfile.aio /usr/local/appli/
 EXPOSE 8080
