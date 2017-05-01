@@ -1,10 +1,6 @@
 FROM nginx:stable-alpine
 MAINTAINER Christophe Furmaniak <christophe.furmaniak@gmail.com>
 
-LABEL LOOZ_VERSION=v0.5.0
-
-RUN mkdir -p /etc/nginx/html/config
-
 COPY src/main/config/nginx-base.conf /etc/nginx/nginx.conf
-COPY src/main/html/* /etc/nginx/html/
+COPY src/main/html/ /etc/nginx/html/
 VOLUME /etc/nginx/html
