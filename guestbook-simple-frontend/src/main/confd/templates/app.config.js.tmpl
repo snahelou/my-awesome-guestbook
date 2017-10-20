@@ -1,4 +1,1 @@
-angular.module('guestbookApp.config', [])
-.constant('configuration', {
-'apiServerRootUrl': '{{getv "/guestbook/frontend/api/server/root/url"}}'
-});
+const apiServerRootUrl = '{{getv "/guestbook/frontend/api/server/root/url"}}/api/v1';
