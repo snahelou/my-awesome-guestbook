@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: filter
+  name: storage
   labels:
-    component: filter
+    component: storage
     app: guestbook
 spec:
   selector:
+    component: storage
     app: guestbook
-    component: filter
   ports:
     - port: 8080
       targetPort: main
@@ -18,20 +18,25 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: filter
+  name: storage
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        component: filter
+        component: storage
         app: guestbook
       annotations:
         io.nodevops/rely-on-confd: "no"
     spec:
       containers:
-        - name: &mainContainerName filter
-          image: looztra/guestbook-filter:0.5.2-aio
+        - name: storage
+          image: looztra/guestbook-storage:0.5.2-aio
           ports:
             - name: main
               containerPort: 8080
+          env:
+            - name: GUESTBOOK_BACKEND_REDIS_READ_VIP
+              value: "redis"
+            - name: GUESTBOOK_BACKEND_REDIS_WRITE_VIP
+              value: "redis"
