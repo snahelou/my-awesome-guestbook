@@ -1,14 +1,140 @@
-<html ng-app="guestbookApp.directive">
-<meta charset="UTF-8"/>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <title>Guestbook</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-    <script src="config/app.config.js"></script>
-    <script src="app.directive.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.0/ui-bootstrap-tpls.js"></script>
+  <meta charset="utf-8" />
+  <meta name="title" content="GuestBook">  
+  <title>GuestBook</title>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
+
 <body>
-    <app></app>
+  <div id="app">
+    <v-app>
+      <main>
+        <v-layout row>
+          <v-flex xs12 sm6 offset-sm3>
+            <v-card>
+
+              <v-toolbar color="red darken-4 mb-4" dark>
+                <v-toolbar-title>GuestBook</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <span>
+                  version {{ version }}
+                </span>
+              </v-toolbar>
+
+              <v-flex xs8 sm6 offset-sm3 offset-xs1 class="mb-4">
+                <v-form ref="form" lazy-validation>
+                  <v-text-field label="Username" v-model="username" required></v-text-field>
+                  <v-text-field label="Message" v-model="msg" required @keyup.enter.native="postMessage(username, msg)"></v-text-field>
+                  <v-btn @click="postMessage(username, msg)">submit</v-btn>
+                </v-form>
+              </v-flex>
+
+              <v-toolbar color="red darken-4" dark dense v-if="messages.length">
+                <v-toolbar-title class="body-2">Message<template v-if="messages.length > 1">s ({{ messages.length }})</template></v-toolbar-title>
+                <v-spacer></v-spacer>
+              </v-toolbar>
+
+              <v-list two-line>
+                <v-list-tile avatar @click="" v-for="(message, i) in messages" :key="`message-${i}`">
+                  <v-list-tile-avatar>
+                    <img src="https://www.welcometothejungle.co/uploads/company/logo/zenika.png" alt="Zenika logo">
+                  </v-list-tile-avatar>
+                  <v-list-tile-content>
+                    <v-list-tile-title>{{ message.userName || 'A stranger' }}</v-list-tile-title>
+                    <v-list-tile-sub-title class="grey--text text--darken-4">{{ message.content }}</v-list-tile-sub-title>
+                    <v-list-tile-sub-title>Server: {{ message.metadata.apiServerName }}</v-list-tile-sub-title>
+                  </v-list-tile-content>
+                  <v-list-tile-action>
+                    <v-list-tile-action-text>{{ getTime(message.metadata.datetimeString) }}</v-list-tile-action-text>
+                    <v-icon color="grey lighten-1">chat_bubble</v-icon>
+                  </v-list-tile-action>
+                </v-list-tile>
+              </v-list>
+
+            </v-card>
+          </v-flex>
+        </v-layout>
+
+        <v-snackbar :timeout="6000" :color="'error'" v-model="snackbar">
+          {{ errorResponse }}
+          <v-btn dark flat @click.native="snackbar = false">Close</v-btn>
+        </v-snackbar>
+      </main>
+    </v-app>
+  </div>
+
+  <script src="config/app.config.js"></script>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        username: '',
+        msg: '',
+        messages: [{content: 'si tu vois ce message c\'est que ça n\'a pas fonctionné :('}],
+        version: 'unknown',
+        errorResponse: '',
+        snackbar: false,
+      },
+      mounted() {
+        this.getVersion()
+        this.getMessages()
+      },
+      methods: {
+        getMessages() {
+          fetch(`${apiServerRootUrl}/guestbook/messages`)
+            .then(response => {
+              if (response.ok) {
+                return response.json()
+              }
+              throw Error(response.status)
+            })
+            .then(body => this.messages = body)
+            .catch(status => {
+              this.errorResponse = `Something is wrong with the backend (${status})`
+              this.snackbar = true
+            })
+        },
+        getVersion() {
+          fetch(`${apiServerRootUrl}/version`)
+            .then(response => response.json())
+            .then(body => this.version = body.version)
+        },
+        getTime(datetime) {
+          return datetime
+        },
+        postMessage(userName, content) {
+          fetch(`${apiServerRootUrl}/guestbook/messages`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userName,
+              content,
+            }),
+          }).then(response => {
+            if (response.ok) {
+              return response.json()
+            }
+            throw Error(response.status)
+          })
+          .then(body => {
+            this.messages.unshift(body)
+            this.username = ''
+            this.msg = ''
+          }).catch(status => {
+            this.errorResponse = `Houston, something went wrong while storing to the backend (${status})`
+            this.snackbar = true
+          })
+        },
+      }
+    })
+  </script>
 </body>
 </html>
