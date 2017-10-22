@@ -15,8 +15,8 @@ import net.devlab722.guestbook.FixtureHelpers;
 public class TestMetadata {
     public static final ObjectMapper MAPPER = Jackson.newObjectMapper();
     public static final Metadata SAMPLE_METADATA = Metadata.builder()
-            .apiServerName("localhost")
-            .datetimeString("2016-03-14T12:29:03Z")
+            .storageServerName("localhost")
+            .storageDatetimeString("2016-03-14T12:29:03Z")
             .build();
 
     @Test

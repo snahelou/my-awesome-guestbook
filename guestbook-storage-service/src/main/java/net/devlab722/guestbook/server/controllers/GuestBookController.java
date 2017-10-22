@@ -31,8 +31,8 @@ public class GuestBookController {
         Message augmented = Message.of(message).metadata(
                 Metadata.of(
                         message.getMetadata())
-                        .apiServerName(HOSTNAME)
-                        .datetimeString(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now()))
+                        .storageServerName(HOSTNAME)
+                        .storageDatetimeString(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now()))
                         .build()
         ).build();
         redisBackend.storeMessage(augmented);

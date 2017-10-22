@@ -14,10 +14,10 @@ import lombok.ToString;
 @Builder
 @JsonDeserialize(builder = Version.VersionBuilder.class)
 public class Version {
-    private final String version;
+    private final String product;
     private final String gateway;
     private final String filter;
-    private final String guestbook;
+    private final String storage;
 
     @JsonPOJOBuilder(withPrefix = "")
     public static final class VersionBuilder {
