@@ -1,0 +1,18 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gateway
+  annotations:
+    kubernetes.io/ingress.class: traefik
+  labels:
+    app: guestbook
+    component: gateway
+spec:
+  rules:
+  - host: guestbook-api.192.168.99.100.xip.io
+    http:
+      paths:
+      - backend:
+          serviceName: gateway
+          servicePort: main
