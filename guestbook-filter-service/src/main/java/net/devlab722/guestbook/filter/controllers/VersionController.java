@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import net.devlab722.guestbook.api.Version;
 
 @Controller
-@RequestMapping("/api/filter/v1/version")
+@RequestMapping("/api/v1/filter/version")
 public class VersionController {
 
     @Value("${filter.version:unknown}")

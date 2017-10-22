@@ -22,7 +22,7 @@
                 <v-toolbar-title>GuestBook</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <span>
-                  version {{ version }}
+                  version {{ version }} (g/{{ gatewayVersion }};f/{{ filterVersion }};s/{{ storageVersion }})
                 </span>
               </v-toolbar>
 
@@ -47,10 +47,10 @@
                   <v-list-tile-content>
                     <v-list-tile-title>{{ message.userName || 'A stranger' }}</v-list-tile-title>
                     <v-list-tile-sub-title class="grey--text text--darken-4">{{ message.content }}</v-list-tile-sub-title>
-                    <v-list-tile-sub-title>Server: {{ message.metadata.apiServerName }}</v-list-tile-sub-title>
+                    <v-list-tile-sub-title>Gateway: {{ message.metadata.gatewayServerName }}, Filter: {{ message.metadata.filterServerName }}, Storage: {{ message.metadata.storageServerName }}</v-list-tile-sub-title>
                   </v-list-tile-content>
                   <v-list-tile-action>
-                    <v-list-tile-action-text>{{ getTime(message.metadata.datetimeString) }}</v-list-tile-action-text>
+                    <v-list-tile-action-text>{{ getTime(message.metadata.storageDatetimeString) }}</v-list-tile-action-text>
                     <v-icon color="grey lighten-1">chat_bubble</v-icon>
                   </v-list-tile-action>
                 </v-list-tile>
@@ -80,11 +80,14 @@
         msg: '',
         messages: [{content: 'si tu vois ce message c\'est que ça n\'a pas fonctionné :('}],
         version: 'unknown',
+          storageVersion: 'unknown',
+          filterVersion: 'unknown',
+          gatewayVersion: 'unknown',
         errorResponse: '',
         snackbar: false,
       },
       mounted() {
-        this.getVersion()
+        this.getVersion();
         this.getMessages()
       },
       methods: {
@@ -92,20 +95,25 @@
           fetch(`${apiServerRootUrl}/guestbook/messages`)
             .then(response => {
               if (response.ok) {
-                return response.json()
+                return response.json();
               }
               throw Error(response.status)
             })
             .then(body => this.messages = body)
             .catch(status => {
-              this.errorResponse = `Something is wrong with the backend (${status})`
+              this.errorResponse = `Something is wrong with the backend (${status})`;
               this.snackbar = true
             })
         },
         getVersion() {
           fetch(`${apiServerRootUrl}/version`)
             .then(response => response.json())
-            .then(body => this.version = body.version)
+            .then(body => {
+                this.version = body.product;
+                this.gatewayVersion = body.gateway;
+                this.storageVersion = body.storage;
+                this.filterVersion = body.filter;
+            })
         },
         getTime(datetime) {
           return datetime
@@ -125,12 +133,12 @@
             throw Error(response.status)
           })
           .then(body => {
-            this.messages.unshift(body)
-            this.username = ''
-            this.msg = ''
+            this.messages.unshift(body);
+            this.username = '';
+            this.msg = '';
           }).catch(status => {
-            this.errorResponse = `Houston, something went wrong while storing to the backend (${status})`
-            this.snackbar = true
+            this.errorResponse = `Houston, something went wrong while storing to the backend (${status})`;
+            this.snackbar = true;
           })
         },
       }

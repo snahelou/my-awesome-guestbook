@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import net.devlab722.guestbook.api.Version;
 
 @Controller
-@RequestMapping("/api/v1/version")
+@RequestMapping("/api/v1/guestbook/version")
 public class VersionController {
 
     @Value("${guestbook.version:unknown}")
@@ -19,6 +19,6 @@ public class VersionController {
     public
     @ResponseBody
     Version echoVersion() {
-        return Version.builder().version(version).build();
+        return Version.builder().storage(version).build();
     }
 }

@@ -16,6 +16,7 @@ services:
     environment:
       GATEWAY_GUESTBOOK_ENDPOINTSASSTRING: "storage:8080"
       GATEWAY_FILTER_ENDPOINTSASSTRING: "filter:8080"
+      GATEWAY_REST_RETRY_ENABLED: "false"
     depends_on:
     - storage
     - filter

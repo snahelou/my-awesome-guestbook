@@ -19,7 +19,7 @@ import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import net.devlab722.guestbook.api.Message;
 import net.devlab722.guestbook.api.Metadata;
-import net.devlab722.guestbook.gateway.backend.ApiBackend;
+import net.devlab722.guestbook.gateway.backend.StorageBackend;
 import net.devlab722.guestbook.gateway.backend.FilterBackend;
 
 @Controller
@@ -33,7 +33,7 @@ public class GatewayController {
     FilterBackend filterBackend;
 
     @Autowired
-    ApiBackend apiBackend;
+    StorageBackend storageBackend;
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
     public ResponseEntity<Message> storeMessage(@RequestBody(required = true) Message message) {
@@ -56,7 +56,7 @@ public class GatewayController {
                         return rem;
                     }
                 })
-                .flatMap(rem -> apiBackend.rxStore(rem.getBody()))
+                .flatMap(rem -> storageBackend.rxStore(rem.getBody()))
                 .map(rem -> {
                     if (rem.getStatusCode() != HttpStatus.CREATED) {
                         throw new RuntimeException("Expected status code <" +
@@ -69,11 +69,14 @@ public class GatewayController {
                 .first()
                 .subscribe(result::add,
                         error -> {
-                            Message errorMessage = Message.builder()
+                            Message errorMessage = Message.of(message)
                                     .metadata(
-                                            Metadata.builder().inError(true).errorString(error.getMessage()).build()
+                                            Metadata.builder()
+                                                    .inError(true)
+                                                    .errorString(error.getMessage())
+                                                    .build()
                                     ).build();
-                            result.add(new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST));
+                            result.add(new ResponseEntity<>(errorMessage, HttpStatus.SERVICE_UNAVAILABLE));
                         });
 
         return result.stream().findFirst().get();
@@ -83,7 +86,7 @@ public class GatewayController {
     public ResponseEntity<List<Message>> getMessages() {
         Set<ResponseEntity<List<Message>>> result = Sets.newHashSet();
         // call the gestbook api service to get all messages
-        apiBackend.rxGet()
+        storageBackend.rxGet()
                 .map(rem -> {
                     if (rem.getStatusCode() != HttpStatus.OK) {
                         throw new RuntimeException("Expected status code <" +

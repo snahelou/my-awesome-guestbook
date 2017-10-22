@@ -15,25 +15,27 @@ import lombok.ToString;
 @JsonDeserialize(builder = Metadata.MetadataBuilder.class)
 public class Metadata {
 
-    private final String apiServerName;
-    private final String datetimeString;
+    private final String storageServerName;
+    private final String storageDatetimeString;
     private final String filterServerName;
     private final String filterDatetimeString;
     private final String gatewayServerName;
     private final String gatewayDatetimeString;
     private final String errorString;
+    private final String errorDatetimeString;
     private boolean inError = false;
 
     public static MetadataBuilder of(Metadata original) {
         if (original != null) {
             return Metadata.builder()
-                    .apiServerName(original.getApiServerName())
-                    .datetimeString(original.getDatetimeString())
+                    .storageServerName(original.getStorageServerName())
+                    .storageDatetimeString(original.getStorageDatetimeString())
                     .filterServerName(original.getFilterServerName())
                     .filterDatetimeString(original.getFilterDatetimeString())
                     .gatewayServerName(original.getGatewayServerName())
-                    .gatewayDatetimeString(original.gatewayDatetimeString)
-                    .errorString(original.getErrorString());
+                    .gatewayDatetimeString(original.getGatewayDatetimeString())
+                    .errorString(original.getErrorString())
+                    .errorDatetimeString(original.getErrorDatetimeString());
         } else {
             return Metadata.builder();
         }
