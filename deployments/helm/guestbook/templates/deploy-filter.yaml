@@ -2,10 +2,10 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "storage.fullname" . }}
+  name: {{ template "filter.fullname" . }}
   labels:
     app: {{ template "guestbook.name" . }}
-    component: storage
+    component: filter
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -15,22 +15,17 @@ spec:
     metadata:
       labels:
         app: {{ template "guestbook.name" . }}
-        component: storage
+        component: filter
         release: {{ .Release.Name }}
       annotations:
         io.nodevops/rely-on-confd: "no"
     spec:
       containers:
-        - name: storage
-          image: looztra/guestbook-storage:{{ .Values.image.version }}-aio
+        - name: &mainContainerName filter
+          image: looztra/guestbook-filter:{{ .Values.image.version }}-aio
           ports:
             - name: main
               containerPort: 8080
-          env:
-            - name: GUESTBOOK_BACKEND_REDIS_READ_VIP
-              value: {{ template "redis.fullname" . }}
-            - name: GUESTBOOK_BACKEND_REDIS_WRITE_VIP
-              value: {{ template "redis.fullname" . }}
           volumeMounts:
             - name: podinfo
               mountPath: /etc/podinfo
@@ -46,7 +41,7 @@ spec:
             httpGet:
               path: /admin/info
               port: 8080
-            initialDelaySeconds: 30
+            initialDelaySeconds: 10
             timeoutSeconds: 1
             failureThreshold: 3
       volumes:

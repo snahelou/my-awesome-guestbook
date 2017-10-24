@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "storage.fullname" . }}
+  name: {{ template "filter.fullname" . }}
   labels:
     app: {{ template "guestbook.name" . }}
     component: storage
@@ -12,7 +12,7 @@ metadata:
 spec:
   selector:
     app: {{ template "guestbook.name" . }}
-    component: storage
+    component: filter
   ports:
     - name: main
       port: 8080

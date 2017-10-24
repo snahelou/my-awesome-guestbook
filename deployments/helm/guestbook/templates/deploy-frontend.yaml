@@ -2,10 +2,10 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "storage.fullname" . }}
+  name: {{ template "frontend.fullname" . }}
   labels:
     app: {{ template "guestbook.name" . }}
-    component: storage
+    component: frontend
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -15,38 +15,37 @@ spec:
     metadata:
       labels:
         app: {{ template "guestbook.name" . }}
-        component: storage
+        component: frontend
         release: {{ .Release.Name }}
       annotations:
-        io.nodevops/rely-on-confd: "no"
+        io.nodevops/rely-on-ingress: "yes"
+        io.nodevops/rely-on-confd: "yes"
     spec:
       containers:
-        - name: storage
-          image: looztra/guestbook-storage:{{ .Values.image.version }}-aio
+        - name: frontend
+          image: looztra/guestbook-frontend:{{ .Values.image.version }}-confd
           ports:
-            - name: main
-              containerPort: 8080
+          - name: main
+            containerPort: 80
           env:
-            - name: GUESTBOOK_BACKEND_REDIS_READ_VIP
-              value: {{ template "redis.fullname" . }}
-            - name: GUESTBOOK_BACKEND_REDIS_WRITE_VIP
-              value: {{ template "redis.fullname" . }}
+            - name: GUESTBOOK_FRONTEND_API_SERVER_ROOT_URL
+              value: "http://guestbook-api.192.168.99.100.xip.io"
           volumeMounts:
             - name: podinfo
               mountPath: /etc/podinfo
               readOnly: false
           livenessProbe:
             httpGet:
-              path: /admin/info
-              port: 8080
+              path: /config/app.config.js
+              port: 80
             initialDelaySeconds: 10
             timeoutSeconds: 1
             failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /admin/info
-              port: 8080
-            initialDelaySeconds: 30
+              path: /config/app.config.js
+              port: 80
+            initialDelaySeconds: 10
             timeoutSeconds: 1
             failureThreshold: 3
       volumes:
@@ -59,3 +58,4 @@ spec:
               - path: "annotations"
                 fieldRef:
                   fieldPath: metadata.annotations
+
