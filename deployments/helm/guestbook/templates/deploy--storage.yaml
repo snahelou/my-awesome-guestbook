@@ -10,7 +10,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.storageReplicaCount }}
   template:
     metadata:
       labels:
@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: storage
-          image: looztra/guestbook-storage:{{ .Values.image.version }}-aio
+          image: looztra/guestbook-storage:{{ default .Values.image.mainVersion .Values.image.storageVersion }}-aio
           ports:
             - name: main
               containerPort: 8080

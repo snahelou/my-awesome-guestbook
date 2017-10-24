@@ -10,12 +10,15 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
   annotations:
-    kubernetes.io/ingress.class: traefik
+    {{- range $key, $value := .Values.ingress.gateway.annotations }}
+      {{ $key }}: {{ $value | quote }}
+    {{- end }}
 spec:
   rules:
-  - host: guestbook-api.192.168.99.100.xip.io
-    http:
-      paths:
-      - backend:
-          serviceName: {{ template "gateway.fullname" . }}
-          servicePort: main
+    - host: {{ .Values.ingress.gateway.host }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ template "gateway.fullname" . }}
+              servicePort: main

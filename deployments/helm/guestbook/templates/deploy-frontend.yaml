@@ -10,7 +10,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.frontendReplicaCount }}
   template:
     metadata:
       labels:
@@ -23,13 +23,13 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: looztra/guestbook-frontend:{{ .Values.image.version }}-confd
+          image: looztra/guestbook-frontend:{{ default .Values.image.mainVersion .Values.image.frontendVersion }}-confd
           ports:
           - name: main
             containerPort: 80
           env:
             - name: GUESTBOOK_FRONTEND_API_SERVER_ROOT_URL
-              value: "http://guestbook-api.192.168.99.100.xip.io"
+              value: "http://{{ .Values.ingress.gateway.host }}"
           volumeMounts:
             - name: podinfo
               mountPath: /etc/podinfo
