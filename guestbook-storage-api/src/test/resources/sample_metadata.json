@@ -1,4 +1,4 @@
 {
-"apiServerName" : "localhost",
-"datetimeString" : "2016-03-14T12:29:03Z"
+  "storageServerName" : "localhost",
+  "storageDatetimeString" : "2016-03-14T12:29:03Z"
 }
