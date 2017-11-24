@@ -1,6 +1,5 @@
 package net.devlab722.guestbook.server.backend;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import net.devlab722.guestbook.api.Jackson;
 import net.devlab722.guestbook.api.Message;
+import net.devlab722.guestbook.api.converters.JsonToMessageConverter;
 import net.devlab722.guestbook.server.errors.BadRequestException;
 import redis.clients.jedis.Jedis;
 
@@ -25,6 +25,7 @@ public class RedisBackend {
     private Jedis jedisRead;
     private Jedis jedisWrite;
     private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+    private static final JsonToMessageConverter CONVERTER = new JsonToMessageConverter(MAPPER);
     public static final int MAX_RETURNED_MESSAGES = 100;
 
     @Autowired
@@ -53,16 +54,7 @@ public class RedisBackend {
 
         return jedisRead.lrange("messages", 0, MAX_RETURNED_MESSAGES)
                 .stream()
-                .map(s -> {
-                    try {
-                        return MAPPER.readValue(s, Message.class);
-                    } catch (IOException e) {
-                        // deal with v0.0.1 message format
-                        return Message.builder()
-                                .content(s)
-                                .build();
-                    }
-                })
+                .map(CONVERTER::apply)
                 .collect(Collectors.toList());
     }
 
