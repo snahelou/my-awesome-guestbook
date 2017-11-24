@@ -12,7 +12,7 @@ jobs:
       - run:
           name: Grab new dependencies
           command: |
-            if [ -d ~/.m2/repository ]; then
+            if [ ! -d ~/.m2/repository ]; then
               echo "No cache found, cheating by running a full mvn 'compile' step"
               mvn compile
             else
