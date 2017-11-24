@@ -9,7 +9,15 @@ jobs:
       - restore_cache:
           key: guestbook-{{ .Branch }}-{{ checksum "pom.xml" }}
 
-      - run: mvn dependency:go-offline
+      - run:
+          name: Grab new dependencies
+          command: |
+            ls ~/.m2/repository
+            if [ -d ~/.m2/repository/net/devlab722 ]; then
+              mvn dependency:go-offline
+            else
+              mvn compile
+            fi
 
       - save_cache:
           paths:
