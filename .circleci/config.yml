@@ -12,11 +12,12 @@ jobs:
       - run:
           name: Grab new dependencies
           command: |
-            ls ~/.m2/repository
-            if [ -d ~/.m2/repository/net/devlab722 ]; then
-              mvn dependency:go-offline
-            else
+            if [ -d ~/.m2/repository ]; then
+              echo "No cache found, cheating by running a full mvn 'compile' step"
               mvn compile
+            else
+              echo "Cache found"
+              mvn dependency:go-offline
             fi
 
       - save_cache:
