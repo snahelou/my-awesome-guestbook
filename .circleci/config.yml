@@ -46,8 +46,8 @@ jobs:
             echo "Saving the image for potential deployment"
             docker image ls
             for image in guestbook-filter guestbook-storage guestbook-gateway guestbook-frontend; do
-              docker save zcid/${image}-aio -o workspace/archives/docker-img--${image}-aio
-              docker save zcid/${image}-confd -o workspace/archives/docker-img--${image}-confd
+              docker save zcid/${image}-aio -o workspace/artifacts/docker-img--${image}-aio
+              docker save zcid/${image}-confd -o workspace/artifacts/docker-img--${image}-confd
             done
       - persist_to_workspace:
           root: workspace
