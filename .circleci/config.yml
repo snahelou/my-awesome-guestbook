@@ -26,15 +26,15 @@ jobs:
             echo "Showing of Docker version"
             docker version
             echo "Building the image"
-            ./build-images.bash -c -a -n zcicd
+            ./build-images.bash -c -a -n zcicd -v tmp
       - run:
           name: Save docker images
           command: |
             echo "Saving the image for potential deployment"
             docker image ls
             for image in guestbook-filter guestbook-storage guestbook-gateway guestbook-frontend; do
-              docker save zcid/${image}-aio -o workspace/artifacts/docker-img--${image}-aio
-              docker save zcid/${image}-confd -o workspace/artifacts/docker-img--${image}-confd
+              docker save zcid/${image}:tmp-aio -o workspace/artifacts/docker-img--${image}--tmp-aio
+              docker save zcid/${image}:tmp-confd -o workspace/artifacts/docker-img--${image}--tmp-confd
             done
       - persist_to_workspace:
           root: workspace
