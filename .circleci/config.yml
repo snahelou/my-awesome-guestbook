@@ -1,11 +1,52 @@
-machine:
-  java:
-    version: oraclejdk8
+version: 2
 
-dependencies:
-  override:
-    - mvn clean
+jobs:
+  build_backend:
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          key: guestbook-{{ .Branch }}-{{ checksum "pom.xml" }}
 
-test:
-  override:
-    - mvn package
+      - run: mvn dependency:go-offline
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: guestbook-{{ .Branch }}-{{ checksum "pom.xml" }}
+
+      - run: mvn package
+      - setup_remote_docker
+      - run:
+          name: Prepare Artifacts for potential deployment
+          command: |
+            mkdir -p workspace/artifacts
+            echo ${CIRCLE_BUILD_NUM} > workspace/artifacts/circle-build-num.txt
+      - run:
+          name: Build the docker images
+          command: |
+            set -x
+            echo "Showing of Docker version"
+            docker version
+            echo "Building the image"
+            ./build-images.bash -c -a -n zcicd
+      - run:
+          name: Save docker images
+          command: |
+            echo "Saving the image for potential deployment"
+            docker image ls
+            for image in guestbook-filter guestbook-storage guestbook-gateway guestbook-frontend; do
+              docker save zcid/${image}-aio -o workspace/archives/docker-img--${image}-aio
+              docker save zcid/${image}-confd -o workspace/archives/docker-img--${image}-confd
+            done
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - artifacts
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build_backend
