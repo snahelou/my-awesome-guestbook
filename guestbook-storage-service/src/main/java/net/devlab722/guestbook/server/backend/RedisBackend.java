@@ -54,7 +54,7 @@ public class RedisBackend {
 
         return jedisRead.lrange("messages", 0, MAX_RETURNED_MESSAGES)
                 .stream()
-                .map(CONVERTER::apply)
+                .map(CONVERTER)
                 .collect(Collectors.toList());
     }
 

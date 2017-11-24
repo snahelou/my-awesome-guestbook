@@ -23,6 +23,7 @@ public class Metadata {
     private final String gatewayDatetimeString;
     private final String errorString;
     private final String errorDatetimeString;
+    private final String convertedFromFormat;;
     private boolean inError = false;
 
     public static MetadataBuilder of(Metadata original) {

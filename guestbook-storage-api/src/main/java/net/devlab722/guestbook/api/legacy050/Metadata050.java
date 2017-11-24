@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import net.devlab722.guestbook.api.Metadata;
 
 @Getter
 @EqualsAndHashCode
@@ -14,6 +15,8 @@ import lombok.ToString;
 @Builder
 @JsonDeserialize(builder = Metadata050.Metadata050Builder.class)
 public class Metadata050 {
+
+    public static final String VERSION = "0.5.0";
 
     private final String apiServerName;
     private final String datetimeString;
@@ -23,6 +26,19 @@ public class Metadata050 {
     private final String gatewayDatetimeString;
     private final String errorString;
     private boolean inError = false;
+
+    public Metadata toCurrent() {
+        return Metadata.builder()
+                .storageServerName(apiServerName)
+                .storageDatetimeString(datetimeString)
+                .filterServerName(filterServerName)
+                .filterDatetimeString(filterDatetimeString)
+                .gatewayServerName(gatewayServerName)
+                .gatewayDatetimeString(gatewayDatetimeString)
+                .errorString(errorString)
+                .convertedFromFormat(VERSION)
+                .build();
+    }
 
     public static Metadata050Builder of(Metadata050 original) {
         if (original != null) {

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import net.devlab722.guestbook.api.Message;
 
 @Getter
 @EqualsAndHashCode
@@ -31,6 +32,16 @@ public class Message050 {
         } else {
             return Message050.builder();
         }
+    }
+
+    public Message toCurrent() {
+        return Message.builder()
+                .content(content)
+                .filtered(filtered)
+                .userName(userName)
+                .originalContent(originalContent)
+                .metadata(metadata.toCurrent())
+                .build();
     }
 
     @JsonPOJOBuilder(withPrefix = "")
