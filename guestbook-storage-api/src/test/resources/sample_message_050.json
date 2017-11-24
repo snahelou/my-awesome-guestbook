@@ -1,0 +1,9 @@
+{
+  "content" : "Coucou ça gaze?",
+  "userName" : "spiderman",
+  "filtered" : false,
+  "metadata" : {
+    "apiServerName" : "localhost",
+    "datetimeString" : "2016-03-14T12:29:03Z"
+  }
+}
