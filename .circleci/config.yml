@@ -7,12 +7,12 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: guestbook-{{ .Branch }}-{{ checksum "pom.xml" }}
+          key: guestbook-v1-{{ checksum "pom.xml" }}
       - run: mvn package
       - save_cache:
           paths:
             - ~/.m2
-          key: guestbook-{{ .Branch }}-{{ checksum "pom.xml" }}
+          key: guestbook-v1-{{ checksum "pom.xml" }}
       - setup_remote_docker
       - run:
           name: Prepare Artifacts for potential deployment
@@ -30,6 +30,7 @@ jobs:
       - run:
           name: Save docker images
           command: |
+            set -x
             echo "Saving the image for potential deployment"
             docker image ls
             for image in guestbook-filter guestbook-storage guestbook-gateway guestbook-frontend; do
