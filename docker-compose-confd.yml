@@ -1,7 +1,7 @@
 version: '2'
 services:
   filter:
-    image: looztra/guestbook-filter:0.5.2-confd
+    image: looztra/guestbook-filter:0.6.1-confd
     volumes_from:
     - filter-config
   filter-config:
@@ -9,7 +9,7 @@ services:
     command:
     - /bin/true
   storage:
-    image: looztra/guestbook-storage:0.5.2-confd
+    image: looztra/guestbook-storage:0.6.1-confd
     volumes_from:
     - storage-config
   storage-config:
@@ -17,7 +17,7 @@ services:
     command:
     - /bin/true
   gateway:
-    image: looztra/guestbook-gateway:0.5.2-confd
+    image: looztra/guestbook-gateway:0.6.1-confd
     ports:
       - "8080:8080"
     volumes_from:
@@ -27,7 +27,7 @@ services:
     command:
     - /bin/true
   frontend:
-    image: looztra/guestbook-frontend:0.6.0-confd
+    image: looztra/guestbook-frontend:0.6.1-confd
     ports:
       - "8000:80"
     volumes_from:
