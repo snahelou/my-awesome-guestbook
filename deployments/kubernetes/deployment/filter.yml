@@ -30,8 +30,8 @@ spec:
         io.nodevops/rely-on-confd: "no"
     spec:
       containers:
-        - name: &mainContainerName filter
-          image: looztra/guestbook-filter:0.5.2-aio
+        - name: filter
+          image: looztra/guestbook-filter:0.6.1-aio
           ports:
             - name: main
               containerPort: 8080

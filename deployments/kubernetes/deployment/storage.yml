@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
         - name: storage
-          image: looztra/guestbook-storage:0.5.2-aio
+          image: looztra/guestbook-storage:0.6.1-aio
           ports:
             - name: main
               containerPort: 8080

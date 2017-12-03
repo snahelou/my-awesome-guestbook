@@ -5,7 +5,7 @@ services:
     volumes_from:
     - filter-config
   filter-config:
-    image: looztra/env-guestbook:dev-local--v0.3.0
+    image: looztra/env-guestbook:dev-local--v0.4.1-gdg
     command:
     - /bin/true
   storage:
@@ -13,7 +13,7 @@ services:
     volumes_from:
     - storage-config
   storage-config:
-    image: looztra/env-guestbook:dev-local--v0.3.0
+    image: looztra/env-guestbook:dev-local--v0.4.1-gdg
     command:
     - /bin/true
   gateway:
@@ -23,7 +23,7 @@ services:
     volumes_from:
     - gateway-config
   gateway-config:
-    image: looztra/env-guestbook:dev-local--v0.3.0
+    image: looztra/env-guestbook:dev-local--v0.4.1-gdg
     command:
     - /bin/true
   frontend:
@@ -33,7 +33,7 @@ services:
     volumes_from:
     - frontend-config
   frontend-config:
-    image: looztra/env-guestbook:dev-local--v0.3.0
+    image: looztra/env-guestbook:dev-local--v0.4.1-gdg
     command:
     - /bin/true
   redis:

@@ -2,54 +2,60 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: filter
+  name: frontend
   labels:
-    component: filter
+    component: frontend
     app: guestbook
 spec:
+  type: NodePort
   selector:
     app: guestbook
-    component: filter
+    component: frontend
   ports:
-    - port: 8080
+    - name: main
+      port: 80
       targetPort: main
       protocol: TCP
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: filter
+  name: frontend
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        component: filter
+        component: frontend
         app: guestbook
       annotations:
-        io.nodevops/rely-on-confd: "no"
+        io.nodevops/rely-on-ingress: "yes"
+        io.nodevops/rely-on-confd: "yes"
     spec:
       containers:
-        - name: &mainContainerName filter
-          image: looztra/guestbook-filter:0.5.2-aio
+        - name: frontend
+          image: looztra/guestbook-frontend:0.6.1-confd
           ports:
             - name: main
-              containerPort: 8080
+              containerPort: 80
+          env:
+            - name: GUESTBOOK_FRONTEND_API_SERVER_ROOT_URL
+              value: "http://guestbook-api.192.168.99.100.xip.io"
           volumeMounts:
             - name: podinfo
               mountPath: /etc/podinfo
               readOnly: false
           livenessProbe:
             httpGet:
-              path: /admin/info
-              port: 8080
+              path: /config/app.config.js
+              port: 80
             initialDelaySeconds: 10
             timeoutSeconds: 1
             failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /admin/info
-              port: 8080
+              path: /config/app.config.js
+              port: 80
             initialDelaySeconds: 10
             timeoutSeconds: 1
             failureThreshold: 3
@@ -63,3 +69,4 @@ spec:
               - path: "annotations"
                 fieldRef:
                   fieldPath: metadata.annotations
+

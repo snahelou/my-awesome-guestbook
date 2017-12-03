@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: gateway
-          image: looztra/guestbook-gateway:0.5.2-aio
+          image: looztra/guestbook-gateway:0.6.1-aio
           ports:
             - name: main
               containerPort: 8080
