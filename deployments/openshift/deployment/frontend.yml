@@ -12,6 +12,7 @@ spec:
     protocol: TCP
   selector:
     app: frontend
+    product: guestbook
 ---
 apiVersion: v1
 kind: ReplicationController
@@ -27,7 +28,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: looztra/guestbook-simple-frontend:0.5.0-confd
+        image: looztra/guestbook-simple-frontend:0.6.1-aio
         ports:
         - containerPort: 80
         env:

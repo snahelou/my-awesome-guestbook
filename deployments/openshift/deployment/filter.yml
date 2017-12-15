@@ -12,6 +12,7 @@ spec:
     protocol: TCP
   selector:
     app: filter
+    product: guestbook
 ---
 apiVersion: v1
 kind: ReplicationController
@@ -27,6 +28,6 @@ spec:
     spec:
       containers:
       - name: filter
-        image: looztra/guestbook-filter:0.5.0-no-confd
+        image: looztra/guestbook-filter:0.6.1-aio
         ports:
         - containerPort: 8080

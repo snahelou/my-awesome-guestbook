@@ -2,32 +2,33 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: service-api
+  name: storage
   labels:
-    app: service-api
+    app: storage
     product: guestbook
 spec:
   ports:
   - port: 8080
     protocol: TCP
   selector:
-    app: service-api
+    app: storage
+    product: guestbook
 ---
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: service-api
+  name: storage
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: service-api
+        app: storage
         product: guestbook
     spec:
       containers:
-      - name: service-api
-        image: looztra/guestbook-service-server:0.5.0-no-confd
+      - name: storage
+        image: looztra/guestbook-storage:0.6.1-aio
         ports:
         - containerPort: 8080
         env:

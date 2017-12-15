@@ -12,6 +12,7 @@ spec:
     protocol: TCP
   selector:
     app: gateway
+    product: guestbook
 ---
 apiVersion: v1
 kind: ReplicationController
@@ -27,11 +28,11 @@ spec:
     spec:
       containers:
       - name: gateway
-        image: looztra/guestbook-gateway:0.5.0-no-confd
+        image: looztra/guestbook-gateway:0.6.1-aio
         ports:
         - containerPort: 8080
         env:
         - name: GATEWAY_GUESTBOOK_ENDPOINTSASSTRING
-          value: "service-api:8080"
+          value: "storage:8080"
         - name: GATEWAY_FILTER_ENDPOINTSASSTRING
           value: "filter:8080"
