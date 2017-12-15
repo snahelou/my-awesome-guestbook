@@ -8,11 +8,7 @@ RUN mkdir -p /usr/local/appli/config && \
     wget --no-check-certificate -O /usr/local/bin/confd https://github.com/kelseyhightower/confd/releases/download/v0.11.0/confd-0.11.0-linux-amd64 && \
     chmod +x /usr/local/bin/confd
 
-ENV AB_OF= \
-    JAVA_APP_DIR=/usr/local/appli \
-    JAVA_APP_NAME=guestbook-rest-service-server \
-    LOOZ_VERSION=v0.5.1 \
-    CONFD_ENABLED=true
+ENV CONFD_ENABLED=true
 
 RUN mkdir -p /etc/nginx/html/config
 COPY src/main/config/nginx-base.conf /etc/nginx/nginx.conf

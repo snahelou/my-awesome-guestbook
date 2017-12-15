@@ -1,10 +1,9 @@
-FROM fabric8/java-alpine-openjdk8-jdk:1.2.1
+FROM fabric8/java-alpine-openjdk8-jdk:1.3.1
 MAINTAINER Christophe Furmaniak <christophe.furmaniak@gmail.com>
 
-ENV AB_OF= \
-    JAVA_APP_DIR=/usr/local/appli \
-    JAVA_APP_NAME=guestbook-gateway \
-    LOOZ_VERSION=v0.5.1
+ENV JAVA_APP_DIR=/usr/local/appli \
+    JAVA_APP_NAME=guestbook-gateway
+
 LABEL DOCKERFILE_PATH=/usr/local/appli/Dockerfile.aio
 RUN mkdir -p /usr/local/appli
 COPY target/guestbook-gateway-service-*.jar Dockerfile.aio /usr/local/appli/
