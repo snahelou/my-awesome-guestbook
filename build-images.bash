@@ -124,7 +124,7 @@ init_components_metadata() {
     componentToDirectory["gateway"]="guestbook-gateway-service"
     componentToDirectory["storage"]="guestbook-storage-service"
 
-    component_list_as_string="filter,storage,gateway,frontend"
+    component_list_as_string=${component_list_as_string:-"filter,storage,gateway,frontend"}
 }
 
 main() {
