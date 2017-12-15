@@ -14,7 +14,7 @@ if /usr/local/bin/confd -onetime -backend env
   then
     echo
     echo "w00t w00t!! config has been generated, let's start our sprinbgoot app now"
-    java -jar /usr/local/appli/springboot-app.jar
+    /deployments/run-java.sh
  else
     echo "You failed at starting confd and/or springboot properly"
 fi
