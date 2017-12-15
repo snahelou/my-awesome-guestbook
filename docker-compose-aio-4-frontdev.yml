@@ -15,6 +15,7 @@ services:
     environment:
       GATEWAY_GUESTBOOK_ENDPOINTSASSTRING: 'storage:8080'
       GATEWAY_FILTER_ENDPOINTSASSTRING: 'filter:8080'
+      MANAGEMENT_SECURITY_ENABLED: "false"
     depends_on:
       - storage
       - filter
@@ -25,11 +26,14 @@ services:
     environment:
       GUESTBOOK_BACKEND_REDIS_READ_VIP: redis
       GUESTBOOK_BACKEND_REDIS_WRITE_VIP: redis
+      MANAGEMENT_SECURITY_ENABLED: "false"
     depends_on:
       - redis
   filter:
     image: 'looztra/guestbook-filter:0.6.1-aio'
     ports:
       - '8086:8080'
+    environment:
+      MANAGEMENT_SECURITY_ENABLED: "false"
   redis:
     image: 'redis:3-alpine'
