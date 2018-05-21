@@ -1,39 +1,39 @@
 version: '2'
 services:
   filter:
-    image: looztra/guestbook-filter:0.6.1-confd
+    image: looztra/guestbook-filter:0.6.3-confd
     volumes_from:
     - filter-config
   filter-config:
-    image: looztra/env-guestbook:dev-local--v0.3.0
+    image: looztra/env-guestbook:dev-local--v0.3.3
     command:
     - /bin/true
   storage:
-    image: looztra/guestbook-storage:0.6.1-confd
+    image: looztra/guestbook-storage:0.6.3-confd
     volumes_from:
     - storage-config
   storage-config:
-    image: looztra/env-guestbook:dev-local--v0.3.0
+    image: looztra/env-guestbook:dev-local--v0.3.3
     command:
     - /bin/true
   gateway:
-    image: looztra/guestbook-gateway:0.6.1-confd
+    image: looztra/guestbook-gateway:0.6.3-confd
     ports:
       - "8080:8080"
     volumes_from:
     - gateway-config
   gateway-config:
-    image: looztra/env-guestbook:dev-local--v0.3.0
+    image: looztra/env-guestbook:dev-local--v0.3.3
     command:
     - /bin/true
   frontend:
-    image: looztra/guestbook-frontend:0.6.1-confd
+    image: looztra/guestbook-frontend:0.6.3-confd
     ports:
       - "8000:80"
     volumes_from:
     - frontend-config
   frontend-config:
-    image: looztra/env-guestbook:dev-local--v0.3.0
+    image: looztra/env-guestbook:dev-local--v0.3.3
     command:
     - /bin/true
   redis:

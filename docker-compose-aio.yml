@@ -1,11 +1,11 @@
 version: '2'
 services:
   frontend:
-    image: looztra/guestbook-frontend:0.6.1-aio
+    image: looztra/guestbook-frontend:0.6.3-aio
     ports:
     - "8000:80"
   gateway:
-    image: looztra/guestbook-gateway:0.6.1-aio
+    image: looztra/guestbook-gateway:0.6.3-aio
     ports:
     - "8080:8080"
     environment:
@@ -16,7 +16,7 @@ services:
     - storage
     - filter
   storage:
-    image: looztra/guestbook-storage:0.6.1-aio
+    image: looztra/guestbook-storage:0.6.3-aio
     ports:
     - "8085:8080"
     environment:
@@ -26,7 +26,7 @@ services:
     depends_on:
     - redis
   filter:
-    image: looztra/guestbook-filter:0.6.1-aio
+    image: looztra/guestbook-filter:0.6.3-aio
     ports:
     - "8086:8080"
     environment:
